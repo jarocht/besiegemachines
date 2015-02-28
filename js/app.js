@@ -110,6 +110,8 @@ app.controller('signupModalCtrl', function ($scope, $modalInstance, $firebase, $
 					$modalInstance.close(authData);
 				}
 			});
+		}else{
+			$scope.addAlert('Please enter all information','warning');
 		}
 
 	};
@@ -131,6 +133,8 @@ app.controller('signupModalCtrl', function ($scope, $modalInstance, $firebase, $
 				}
 
 			});
+		}else{
+			$scope.addAlert('Please enter all information','warning');
 		}
 
 	};

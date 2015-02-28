@@ -10,3 +10,6 @@ body, html {
 .nav-padding {
     padding-bottom: 50px;
 }
+a[ng-click]{
+    cursor: pointer;
+}

@@ -16,9 +16,9 @@
 				<li><a ng-click="openLoginSignup('login')" ng-if="!user">Login</a></li>
 				<li><a ng-click="openLoginSignup('signup')" ng-if="!user">Sign Up</a></li>
 				<li ng-if="user" class="dropdown" dropdown>
-					<a class="dropdown-toggle" dropdown-toggle>{{user.password.email}}<span class="caret"></span></a>
+					<a class="dropdown-toggle" dropdown-toggle>{{user.uid}}<span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a ui-sref="profile({profileId:user.password.email})">My Profile</a></li>
+						<li><a ui-sref="profile({profileId:user.uid})">My Profile</a></li>
 						<li><a ng-click="logOut()">logOut</a></li>
 						
 					</ul>

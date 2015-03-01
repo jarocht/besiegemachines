@@ -15,6 +15,16 @@
 				<input class="form-control" ng-model="password" type="password" placeholder="Password"/>
 			</div>
 		</div>
+		<div class="row" ng-show="signup">
+			<div class="col-md-8 col-md-offset-2">
+				<input class="form-control" ng-model="password2" type="password" placeholder="Verify Password"/>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<a ng-click="sendPasswordReset()" class="input-sm italic">Reset Your Password</a>
+			</div>
+		</div>
 	</div>
 	<div class="modal-footer">
 		<div class="row">

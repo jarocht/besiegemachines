@@ -31,9 +31,9 @@ app.directive('navbar', function () {
 
 	}
 });
-app.controller('navbarCtrl', function ($scope, $firebase, $firebaseAuth, $modal, $log, $cookies,firebaseService) {
+app.controller('navbarCtrl', function ($scope, $firebase, $firebaseAuth, $modal, $log, $cookies, firebaseService) {
 	console.log('Controller is set up');
-	$scope.restoreSession = function() {
+	$scope.restoreSession = function () {
 		if ($cookies.token) {
 			// Authenticate users with a custom Firebase token
 			firebaseService.ref.authWithCustomToken($cookies.token,
@@ -78,12 +78,10 @@ app.controller('navbarCtrl', function ($scope, $firebase, $firebaseAuth, $modal,
 	};
 
 });
-app.controller('signupModalCtrl', function ($scope, $modalInstance, $firebase, $firebaseAuth, $cookies, firebaseService, modaltype) {
-
-	$scope.signup = modaltype == 'signup';
+app.controller('passwordResetCtrl', function ($scope, $modalInstance, firebaseService, email, oldpw) {
 	$scope.alerts = [];
 
-	$scope.addAlert = function (a_msg, a_type) {
+	var addAlert = function (a_msg, a_type) {
 		$scope.alerts.push({
 			type : a_type,
 			msg : a_msg
@@ -95,6 +93,63 @@ app.controller('signupModalCtrl', function ($scope, $modalInstance, $firebase, $
 	$scope.closeAlert = function (index) {
 		$scope.alerts.splice(index, 1);
 	};
+
+	$scope.resetPassword = function () {
+		if ($scope.password != $scope.password2) {
+			addAlert("Passwords do not match!", "danger");
+		} else {
+			firebaseService.ref.changePassword({
+				email : email,
+				oldPassword : oldpw,
+				newPassword : $scope.password
+			}, function (error) {
+				if (error === null) {
+					$modalInstance.close(true);
+				} else {
+					addAlert("Error changing password:" + error.message, "danger");
+				}
+			});
+		}
+
+	}
+
+});
+app.controller('signupModalCtrl', function ($scope, $modal,$modalInstance, $firebase, $firebaseAuth, $cookies, firebaseService, modaltype) {
+
+	$scope.signup = modaltype == 'signup';
+	$scope.alerts = [];
+
+	var addAlert = function (a_msg, a_type) {
+		$scope.alerts.push({
+			type : a_type,
+			msg : a_msg
+		});
+		$scope.$apply();
+
+	};
+
+	$scope.closeAlert = function (index) {
+		$scope.alerts.splice(index, 1);
+	};
+	$scope.sendPasswordReset = function () {
+		if (!$scope.email) {
+			addAlert("Please enter an email", "danger");
+		} else {
+			firebaseService.ref.resetPassword({
+				email : $scope.email
+			}, function (error) {
+				if (error === null) {
+					//console.log("Password reset email sent successfully");
+					addAlert("Password reset email sent successfully", "success");
+
+				} else {
+					addAlert("Error sending password reset email: " + error.message, "danger");
+				}
+			});
+
+		}
+	};
+
 	$scope.login = function () {
 		if ($scope.email && $scope.password) {
 			firebaseService.ref.authWithPassword({
@@ -103,15 +158,34 @@ app.controller('signupModalCtrl', function ($scope, $modalInstance, $firebase, $
 			}, function (error, authData) {
 				if (error) {
 					console.log("Login Failed!", error);
-					$scope.addAlert(error.message, 'danger');
+					addAlert(error.message, 'danger');
 				} else {
 					console.log("Authenticated successfully with payload:", authData);
 					$cookies.token = authData.token;
+					if (authData.password.isTemporaryPassword) {
+						var modalInstance = $modal.open({
+								templateUrl : 'partials/passwordResetModal.html',
+								controller : 'passwordResetCtrl',
+								resolve : {
+									email : function () {
+										return $scope.email;
+									},
+									oldpw : function () {
+										return $scope.password
+									}
+								}
+
+							});
+
+						modalInstance.result.then(function (success) {}, function () {
+							$log.info('Modal dismissed at: ' + new Date());
+						});
+					}
 					$modalInstance.close(authData);
 				}
 			});
-		}else{
-			$scope.addAlert('Please enter all information','warning');
+		} else {
+			addAlert('Please enter all information', 'warning');
 		}
 
 	};
@@ -119,22 +193,25 @@ app.controller('signupModalCtrl', function ($scope, $modalInstance, $firebase, $
 
 		console.log($scope.email);
 		console.log($scope.password);
-		if ($scope.email && $scope.password) {
+		
+		if (!($scope.email && $scope.password && $scope.password2)) {
+			addAlert('Please enter all information', 'warning');
+		} else if($scope.password != $scope.password2){
+			addAlert('Passwords do not match!', 'warning');
+		}else{
 			firebaseService.ref.createUser({
 				email : $scope.email,
 				password : $scope.password
 			}, function (error, userData) {
 				if (error) {
 					console.log("Error creating user:", error);
-					$scope.addAlert(error.message, 'danger');
+					addAlert(error.message, 'danger');
 				} else {
 					console.log("Successfully created user account with uid:", userData.uid);
 					$scope.login();
 				}
 
 			});
-		}else{
-			$scope.addAlert('Please enter all information','warning');
 		}
 
 	};

@@ -13,3 +13,11 @@ body, html {
 a[ng-click]{
     cursor: pointer;
 }
+
+.italic{
+	font-style: italic;
+}
+.bold{
+
+	font-weight:bold;
+}

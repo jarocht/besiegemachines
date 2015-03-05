@@ -1,6 +1,10 @@
 <div class="auth-forms">
+	<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				  <h2>Register</h2>
+			</div>
+		</div>
 
-  <h2>Register</h2>
 
   <form ng-submit="register()">
 		 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
@@ -19,12 +23,13 @@
 				<input class="form-control" ng-model="password2" type="password" placeholder="Verify Password"/>
 			</div>
 		</div>
+
 		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
-				<a ng-click="sendPasswordReset()" class="input-sm italic">Reset Your Password</a>
+			<div class="col-md-2 col-md-offset-8">
+				<input type="submit" value="Register" class="btn btn-primary" />
 			</div>
 		</div>
-    <input type="submit" value="Register" class="btn btn-primary" />
+
   </form>
 
 </div>

@@ -1,1 +1,1 @@
-var firebaseURL = "https://besiege.firebaseio.com"
+var firebaseURL = "https://besiege.firebaseio.com";

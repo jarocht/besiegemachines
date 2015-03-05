@@ -12,9 +12,13 @@
 
 
 	};
-
+	
 	$scope.closeAlert = function (index) {
 		$scope.alerts.splice(index, 1);
+	};
+	var errorFunction = function(data){
+	
+		addAlert(data.message,'danger');
 	};
 
 	  $scope.register = function () {
@@ -25,15 +29,16 @@
 			addAlert('Passwords do not match!', 'warning');
 		}else{
 		
-			Auth.register($scope.user, function() {
-			  return Auth.login($scope.user, function() {
+			Auth.register($scope.user).then(function(data) {
+			
+			  return Auth.login($scope.user).then(function() {
 				$location.path('/');
 			  });
-			});
+			},errorFunction);
 		}
 	  };
 });
-app.controller('passwordResetCtrl', function ($scope, $modalInstance, firebaseService, email, oldpw) {
+app.controller('passwordResetCtrl', function ($scope, $modalInstance, firebaseService, email, oldpw, Auth) {
 	$scope.alerts = [];
 
 	var addAlert = function (a_msg, a_type) {
@@ -53,7 +58,7 @@ app.controller('passwordResetCtrl', function ($scope, $modalInstance, firebaseSe
 		if ($scope.password != $scope.password2) {
 			addAlert("Passwords do not match!", "danger");
 		} else {
-			firebaseService.ref.changePassword({
+			Auth.changePassword({
 				email : email,
 				oldPassword : oldpw,
 				newPassword : $scope.password
@@ -69,7 +74,7 @@ app.controller('passwordResetCtrl', function ($scope, $modalInstance, firebaseSe
 	}
 
 });
-app.controller('signupModalCtrl', function ($scope, $modal,$modalInstance, $firebase, $firebaseAuth, $cookies, firebaseService, modaltype) {
+app.controller('signupModalCtrl', function ($scope, $modal,$modalInstance, $firebase, $firebaseAuth, $cookies, firebaseService, modaltype, Auth) {
 
 	$scope.signup = modaltype == 'signup';
 	$scope.alerts = [];
@@ -90,86 +95,30 @@ app.controller('signupModalCtrl', function ($scope, $modal,$modalInstance, $fire
 		if (!$scope.email) {
 			addAlert("Please enter an email", "danger");
 		} else {
-			firebaseService.ref.resetPassword({
-				email : $scope.email
-			}, function (error) {
-				if (error === null) {
-					//console.log("Password reset email sent successfully");
-					addAlert("Password reset email sent successfully", "success");
+			Auth.resetPassword($scope.email).then(function(success){ addAlert("Password reset email sent successfully", "success");},function (error) {
 
-				} else {
 					addAlert("Error sending password reset email: " + error.message, "danger");
-				}
+	
 			});
 
 		}
 	};
 
 	$scope.login = function () {
-		if ($scope.email && $scope.password) {
-			firebaseService.ref.authWithPassword({
-				email : $scope.email,
-				password : $scope.password
-			}, function (error, authData) {
-				if (error) {
-					console.log("Login Failed!", error);
-					addAlert(error.message, 'danger');
-				} else {
-					console.log("Authenticated successfully with payload:", authData);
-					$cookies.token = authData.token;
-					if (authData.password.isTemporaryPassword) {
-						var modalInstance = $modal.open({
-								templateUrl : 'partials/passwordResetModal.html',
-								controller : 'passwordResetCtrl',
-								resolve : {
-									email : function () {
-										return $scope.email;
-									},
-									oldpw : function () {
-										return $scope.password
-									}
-								}
-
-							});
-
-						modalInstance.result.then(function (success) {}, function () {
-							$log.info('Modal dismissed at: ' + new Date());
-						});
-					}
-					$modalInstance.close(authData);
-				}
-			});
-		} else {
+		if (!($scope.user.email && $scope.user.password)) {
 			addAlert('Please enter all information', 'warning');
-		}
-
-	};
-	$scope.createUser = function () {
-
-		console.log($scope.email);
-		console.log($scope.password);
+		} else{
 		
-		if (!($scope.email && $scope.password && $scope.password2)) {
-			addAlert('Please enter all information', 'warning');
-		} else if($scope.password != $scope.password2){
-			addAlert('Passwords do not match!', 'warning');
-		}else{
-			firebaseService.ref.createUser({
-				email : $scope.email,
-				password : $scope.password
-			}, function (error, userData) {
-				if (error) {
-					console.log("Error creating user:", error);
-					addAlert(error.message, 'danger');
-				} else {
-					console.log("Successfully created user account with uid:", userData.uid);
-					$scope.login();
-				}
-
-			});
+	
+			
+			  return Auth.login($scope.user).then(function() {
+				$location.path('/');
+			  });
+	
 		}
 
 	};
+
 	$scope.cancel = function () {
 		$modalInstance.dismiss('cancel');
 	};

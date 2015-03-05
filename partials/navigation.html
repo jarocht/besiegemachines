@@ -20,20 +20,19 @@
 			  </div>
 			  <button type="submit" class="btn btn-default">Submit</button>
 			</form>
-			<ul class="nav navbar-nav navbar-right">
-			  <li ng-show="signedIn()">
-				<a ng-href="#" ng-click="logout()">Logout</a>
-			  </li>
-			</ul>
+
             <ul class="nav navbar-nav">
                 <li><a ui-sref="machines">Machines</a></li>
-				<li><a ng-click="openLoginSignup('login')" ng-if="!user">Login</a></li>
-				<li><a ui-sref="register">Sign Up</a></li>
-				<li ng-if="user" class="dropdown" dropdown>
+				
+				<li><a ng-show="!signedIn()" ng-click="openLoginSignup('login')" ng-if="!user">Login</a></li>
+				<li><a ng-show="!signedIn()" ui-sref="register">Sign Up</a></li>
+				<li ng-show="signedIn()" class="dropdown" dropdown>
 					<a class="dropdown-toggle" dropdown-toggle>{{user.uid}}<span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a ui-sref="profile({profileId:user.uid})">My Profile</a></li>
-						<li><a ng-click="logOut()">logOut</a></li>
+						<li >
+							<a ng-href="#" ng-click="logout()">Logout</a>
+						</li>
 						
 					</ul>
 				

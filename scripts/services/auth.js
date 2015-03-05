@@ -1,31 +1,37 @@
-app.factory('Auth',function( FIREBASE_URL, $rootScope, $location){
+app.factory('Auth',function( $firebaseAuth,FIREBASE_URL, $rootScope, $location){
 	var ref = new Firebase(FIREBASE_URL);
-
+	var fireAuth = $firebaseAuth(ref);
 
   var Auth = {
-    register: function (user,successfunction) {
-      return ref.createUser({email:user.email, password:user.password},successfunction);
+    register: function (user) {
+      return fireAuth.$createUser({email:user.email, password:user.password});
     },
-    login: function (user,successfunction) {
+    login: function (user) {
 		if(typeof(user) == 'string'){
-			return ref.authWithCustomToken(user,successfunction);
+			return fireAuth.$authWithCustomToken(user);
 		}else{
-			return ref.authWithPassword({email:user.email, password:user.password},function(){});
+			return fireAuth.$authWithPassword({email:user.email, password:user.password});
 		}
     },
     logout: function () {
-      ref.unauth();
+      fireAuth.$unauth();
     },
     resolveUser: function() {
-      return ref.getAuth();
+      return fireAuth.$getAuth();
     },
     signedIn: function() {
       return !!Auth.user.provider;
     },
+	resetPassword:function(email){
+		return fireAuth.$resetPassword({'email':email});
+	},
     user: {},
 	error: ''
   };
-
+	
+   fireAuth.$onAuth(function(authData) {
+     angular.copy(authData,Auth.user);
+  });
   $rootScope.$on('$firebaseSimpleLogin:login', function(e, user) {
     console.log('logged in');
     angular.copy(user, Auth.user);

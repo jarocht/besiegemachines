@@ -11,10 +11,24 @@
         </div>
 
         <div class="collapse navbar-collapse navbar-right" id="navbar-collapse">
+			<form class="navbar-form navbar-left" role="search" ng-submit="submitMachine()">
+			  <div class="form-group">
+				<input type="text" class="form-control" placeholder="Title" ng-model="machine.T">
+			  </div>
+			  <div class="form-group">
+			  <input type="text" class="form-control" placeholder="Desc" ng-model="machine.DE">
+			  </div>
+			  <button type="submit" class="btn btn-default">Submit</button>
+			</form>
+			<ul class="nav navbar-nav navbar-right">
+			  <li ng-show="signedIn()">
+				<a ng-href="#" ng-click="logout()">Logout</a>
+			  </li>
+			</ul>
             <ul class="nav navbar-nav">
                 <li><a ui-sref="machines">Machines</a></li>
 				<li><a ng-click="openLoginSignup('login')" ng-if="!user">Login</a></li>
-				<li><a ng-click="openLoginSignup('signup')" ng-if="!user">Sign Up</a></li>
+				<li><a ui-sref="register">Sign Up</a></li>
 				<li ng-if="user" class="dropdown" dropdown>
 					<a class="dropdown-toggle" dropdown-toggle>{{user.uid}}<span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">

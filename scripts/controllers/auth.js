@@ -1,29 +1,4 @@
-﻿var app = angular.module('app', ['ui.router', 'firebase', 'ui.bootstrap', 'ngCookies']);
-
-app.config(function ($stateProvider, $urlRouterProvider) {
-	// For any unmatched url, redirect to /login
-	$urlRouterProvider.otherwise("/home");
-
-	// Now set up the states
-	$stateProvider
-	.state('home', {
-		url : "/home",
-		templateUrl : "partials/home.html",
-		controller : "homeCtrl"
-	});
-
-	// Now set up the states
-	$stateProvider
-	.state('profile', {
-		url : "/profile/:profileId",
-		templateUrl : "partials/profile.html",
-		controller : "profileCtrl"
-	});
-});
-
-app.controller('homeCtrl', function ($scope) {});
-
-app.directive('navbar', function () {
+﻿app.directive('navbar', function () {
 	return {
 		resrict : 'EA',
 		templateUrl : 'partials/navigation.html',
@@ -31,8 +6,21 @@ app.directive('navbar', function () {
 
 	}
 });
-app.controller('navbarCtrl', function ($scope, $firebase, $firebaseAuth, $modal, $log, $cookies, firebaseService) {
-	console.log('Controller is set up');
+app.controller('navbarCtrl', function ($scope, $firebase, $firebaseAuth, $modal, $log, $cookies, $location, Machine, firebaseService) {
+	
+	
+	$scope.machine = {T:'Test Tile',DE:'Description'};
+	
+	
+	$scope.submitMachine = function(){
+		Machine.create($scope.machine).then( function(ref){
+		
+
+			$location.path('/machines/' + ref.name());
+		});
+		
+		
+	};
 	$scope.restoreSession = function () {
 		if ($cookies.token) {
 			// Authenticate users with a custom Firebase token
@@ -225,17 +213,5 @@ app.controller('signupCtrl', function ($scope, $firebase, $firebaseAuth) {
 	var sync = $firebase(ref);
 
 	$scope.data = sync.$asObject();
-
-});
-
-app.controller('profileCtrl', function ($scope, $stateParams) {
-	$scope.id = $stateParams.profileId;
-
-});
-
-app.service('firebaseService', function ($firebase) {
-	firebaseService = this;
-	firebaseService.ref = new Firebase(firebaseURL);
-	firebaseService.sync = $firebase(firebaseService.ref);
 
 });

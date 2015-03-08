@@ -15,10 +15,15 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
 	// Now set up the states
 	$stateProvider
-	.state('profile', {
-		url : "/profile/:profileId",
+	.state('users', {
+		url : "/users/:userId",
 		templateUrl : "partials/profile.html",
-		controller : "profileCtrl"
+		controller : "ProfileCtrl",
+		resolve: {
+			user: function(Auth){
+				return Auth.user;
+			}
+		}
 	});
 	$stateProvider
 	.state('machines', {
@@ -45,16 +50,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 			}
 		}
 	});
+	
 });
 
 app.controller('homeCtrl', function ($scope) {});
 
 
 
-app.controller('profileCtrl', function ($scope, $stateParams) {
-	$scope.id = $stateParams.profileId;
-
-});
 
 app.service('firebaseService', function ($firebase) {
 	firebaseService = this;

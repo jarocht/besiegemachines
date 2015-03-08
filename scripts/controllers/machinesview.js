@@ -20,4 +20,7 @@ app.controller('MachineViewCtrl', function ($scope, $stateParams, Machine, Auth)
 
 		$scope.commentText = '';
 	};
+	$scope.deleteComment = function (comment) {
+  $scope.comments.$remove(comment);
+};
 });

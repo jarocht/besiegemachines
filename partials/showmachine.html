@@ -30,6 +30,11 @@
         <a ng-href="#/users/{{ comment.uid }}">
           {{ comment.usr }}
         </a>
+		<a ng-href=""
+        ng-click="deleteComment(comment)"
+        ng-show="signedIn() && comment.uid === user.uid">
+        (delete)
+      </a>
       </p>
     </div>
   </div>

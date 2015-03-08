@@ -1,26 +1,28 @@
 <div class="container posts-page">
 
   <div class="post row">
-    <div class="col-xs-1">
-    </div>
-    <div class="col-md-9 col-xs-11">
+    <div class="row"  ng-embedly key="key"  query="query" add-image-styles="query.styles">
+		<div class="col-md-12 calcwidth" >
+			<a   ng-href="{{machine.URL}}" > </a>
+		</div>
+	</div>
+	<div class="row col-md-12">
+    <div class="col-md-12 col-xs-12">
+
       <div class="info">
-        <a ng-href="{{ machine.T }}">
-          {{ machine.T }}
+        <p>
+          {{ machine.NM }}
           <span class="url">({{ machine.DE}})</span>
-        </a>
+        </p>
       </div>
       <div>
-        <span>
-          submitted by
-          <a ng-href="#/users/{{ machine.uid }}">
-            {{ machine.usr }}
-          </a>
-        </span>
+        <span>submitted by <a ng-href="#/users/{{ machine.uid }}">{{ machine.usr }}</a></span>
+        &mdash;
+        <a ng-href="#/machines/{{ machine.$id }}">comments</a>
+        <a ng-click="deleteMachine(machine)" ng-show="user.uid === machine.uid">delete</a>
       </div>
     </div>
-    <div class="col-md-2">
-    </div>
+	</div>
   </div>
 
   <div ng-repeat="comment in comments" class="row cmt">

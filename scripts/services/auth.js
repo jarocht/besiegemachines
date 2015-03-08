@@ -8,7 +8,8 @@ app.factory('Auth',function( $firebase, $firebaseAuth, FIREBASE_URL, $rootScope,
     },
 	createProfile: function(user){
 		var profile = {
-			usr:user.username
+			usr:user.username,
+			CD: Firebase.ServerValue.TIMESTAMP
 		};
 		var profileRef = $firebase(ref.child('profile'));
 		return profileRef.$set(user.uid,profile);

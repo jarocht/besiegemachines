@@ -10,8 +10,9 @@ app.controller('UploadCtrl', function ($scope,  $location,Machine, Auth, user) {
 	$scope.upload = function(){
 		$scope.machine.uid = $scope.user.uid;
 		$scope.machine.usr = $scope.user.profile.usr;
-		$scope.machine.CD = new Date();
-		Machine.create($scope.machine);
+		Machine.create($scope.machine).then(function(){
+			$scope.machine = {};
+		});
 		
 		
 	};

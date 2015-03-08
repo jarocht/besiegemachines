@@ -7,6 +7,7 @@ app.factory('Machine', function ($firebase, $location,FIREBASE_URL) {
 	var Machine = {
 		all:machines,
 		create: function(machine){
+			machine.CD = Firebase.ServerValue.TIMESTAMP;
 			return machines.$add(machine).then(function(machineRef){
 				$firebase(ref.child('user_machines').child(machine.uid)).$push(machineRef.name());
 				$location.path('/machines/' + machineRef.name());

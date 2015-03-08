@@ -2,8 +2,16 @@
 
 app.controller('MachineViewCtrl', function ($scope, $stateParams, Machine, Auth) {
 	
+$scope.divwidth = 341;
+	
+	$scope.$watch('divwidth',function(val){  $scope.query = {maxwidth:$scope.divwidth,styles:true};	$('embedly-embed').attr('width',$scope.divwidth); });
+	
+	
+	
+
+		$scope.$watch('query',function(val){  console.log(val) });
 	$scope.key = "ff4f4543bdab49338dbb6dd6ea361049";
-	$scope.query = {maxwidth:100,maxheight:100};
+	$scope.query = {maxwidth:$scope.divwidth,styles:true};
 	$scope.machine = Machine.get($stateParams.machineId);
 	$scope.comments = Machine.comments($stateParams.machineId);
 

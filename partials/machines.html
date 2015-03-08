@@ -1,18 +1,20 @@
 
 
-<div class="container machines-page">
-  <div class="machine row" ng-repeat="machine in machines">
-    <div class="col-xs-1">
-			<img src="http://www.maclife.com/files/u325188/2012/10/missing_screen.png" height="50" width="50"> 
+<div class="container machines-page masonry" >
+  <div class="machine" ng-repeat="machine in machines">
+    <div class="row no-gutter"  ng-embedly key="key"  query="query" add-image-styles="query.styles">
+		<div class="col-md-12 calcwidth" >
+			<a   ng-href="{{machine.URL}}" > </a>
+		</div>
 	</div>
-
-    <div class="col-md-9 col-xs-11">
+	<div class="row col-md-12">
+    <div class="col-md-12 col-xs-12">
 
       <div class="info">
-        <a ng-href="{{ machine.url }}">
-          {{ machine.T }}
+        <p>
+          {{ machine.NM }}
           <span class="url">({{ machine.DE}})</span>
-        </a>
+        </p>
       </div>
       <div>
         <span>submitted by <a ng-href="#/users/{{ machine.uid }}">{{ machine.usr }}</a></span>
@@ -21,5 +23,6 @@
         <a ng-click="deleteMachine(machine)" ng-show="user.uid === machine.uid">delete</a>
       </div>
     </div>
+	</div>
   </div>
 </div>

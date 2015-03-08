@@ -6,7 +6,10 @@ body, html {
 	height: 100%;
 	width: 100%;
 }
-
+.no-gutter {
+	margin-left:0;
+	
+}
 .nav-padding {
     padding-bottom: 50px;
 }
@@ -36,7 +39,14 @@ body {
   border-radius: 100px;
 }
 
-
+.masonry { /* Masonry container */
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+    column-count: 3;
+    -moz-column-gap: 1em;
+    -webkit-column-gap: 1em;
+    column-gap: 1em;
+}
 /* MAIN machineS PAGE */
 .machine {
   background: #fff;
@@ -44,8 +54,16 @@ body {
   -moz-box-shadow: 0 0 5px rgba(0,0,0,0.2);
   -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.2);
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background-color: #D3D3D3;
+    display: inline-block;
+    margin: 0 0 1em;
+    width: 100%;
 }
 
+.padding
+{
+	padding-right:10px;
+}
 .info {
   font-weight: bolder;
   font-size: 16px;

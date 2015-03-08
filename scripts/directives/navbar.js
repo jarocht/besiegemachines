@@ -14,17 +14,7 @@ app.controller('navbarCtrl', function ($scope, $firebase, $firebaseAuth, $modal,
 	$scope.logout = Auth.logout;
 	$scope.user = Auth.user;
 	
-	$scope.submitMachine = function(){
-		$scope.machine.uid = Auth.user.uid;
-		$scope.machine.usr = Auth.user.profile.usr;
-		Machine.create($scope.machine).then( function(ref){
-		
 
-			$location.path('/machines/' + ref.name());
-		});
-		
-		
-	};
 	$scope.restoreSession = function () {
 		if ($cookies.token) {
 			Auth.login($cookies.token);

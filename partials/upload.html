@@ -1,0 +1,42 @@
+<div class="auth-forms">
+	<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				  <h2>Upload</h2>
+			</div>
+		</div>
+
+
+  <form ng-submit="upload()">
+		 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+		 <div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<input class="form-control" ng-model="machine.NM" placeholder="Name" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<textarea rows="10" class="form-control" ng-model="machine.DE" placeholder="Description" ></textarea>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<input class="form-control" ng-model="machine.URL" placeholder="Link"/>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<p>Tags will go Here<p>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-md-2 col-md-offset-8">
+				<input type="submit" value="Upload" class="btn btn-primary" />
+			</div>
+		</div>
+
+  </form>
+
+</div>
+

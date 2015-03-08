@@ -1,6 +1,9 @@
 'use strict';
 
 app.controller('MachineViewCtrl', function ($scope, $stateParams, Machine, Auth) {
+	
+	$scope.key = "ff4f4543bdab49338dbb6dd6ea361049";
+	$scope.query = {maxwidth:100,maxheight:100};
 	$scope.machine = Machine.get($stateParams.machineId);
 	$scope.comments = Machine.comments($stateParams.machineId);
 

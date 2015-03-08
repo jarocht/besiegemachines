@@ -1,7 +1,9 @@
-﻿var app = angular.module('app', ['ui.router', 'firebase', 'ui.bootstrap', 'ngCookies','ngResource'])
-.constant('FIREBASE_URL', 'https://besiege.firebaseio.com/');;
+﻿var app = angular.module('app', ['ui.router', 'firebase', 'ui.bootstrap', 'ngCookies','ngResource', 'ngEmbedApp'])
+.constant('FIREBASE_URL', 'https://besiege.firebaseio.com/');
 
 app.config(function ($stateProvider, $urlRouterProvider) {
+
+
 	// For any unmatched url, redirect to /login
 	$urlRouterProvider.otherwise("/home");
 
@@ -22,6 +24,17 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 		resolve: {
 			user: function(Auth){
 				return Auth.user;
+			}
+		}
+	});
+	$stateProvider
+	.state('upload', {
+		url : "/upload/",
+		templateUrl : "partials/upload.html",
+		controller : "UploadCtrl",
+		resolve: {
+			user: function(Auth){
+				return Auth.resolveUser();
 			}
 		}
 	});
@@ -52,8 +65,23 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 	});
 	
 });
+app.directive('calcwidth', function($timeout){
+	return {
+		restrict: 'C',
+		link:function(scope, element,attrs){
+		
+			$timeout(function(){
+			var d =  $(element).width();
+				scope.$parent.divwidth =d;
+			});
+		}
+	
+	}
 
-app.controller('homeCtrl', function ($scope) {});
+});
+app.controller('homeCtrl', function ($scope) {
+
+});
 
 
 

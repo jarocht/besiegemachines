@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('Machine', function ($firebase, FIREBASE_URL) {
+app.factory('Machine', function ($firebase, $location,FIREBASE_URL) {
 	var ref = new Firebase(FIREBASE_URL);
 	var machines = $firebase(ref.child('machines')).$asArray();
 	
@@ -9,6 +9,7 @@ app.factory('Machine', function ($firebase, FIREBASE_URL) {
 		create: function(machine){
 			return machines.$add(machine).then(function(machineRef){
 				$firebase(ref.child('user_machines').child(machine.uid)).$push(machineRef.name());
+				$location.path('/machines/' + machineRef.name());
 			
 			});
 		},

@@ -10,17 +10,17 @@
 		 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
 		 <div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<input class="form-control" ng-model="user.email" placeholder="Email Address" />
+				<input class="form-control" ng-model="registration_info.email" placeholder="Email Address" />
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<input class="form-control" ng-model="user.username" placeholder="Username" />
+				<input class="form-control" ng-model="registration_info.username" placeholder="Username" />
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<input class="form-control" ng-model="user.password" type="password" placeholder="Password"/>
+				<input class="form-control" ng-model="registration_info.password" type="password" placeholder="Password"/>
 			</div>
 		</div>
 		<div class="row">

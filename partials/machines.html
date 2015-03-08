@@ -15,10 +15,10 @@
         </a>
       </div>
       <div>
-        <span>submitted by <a ng-href="#/users/{{ machine.creatorUID }}">{{ machine.creator }}</a></span>
+        <span>submitted by <a ng-href="#/users/{{ machine.uid }}">{{ machine.usr }}</a></span>
         &mdash;
         <a ng-href="#/machines/{{ machine.$id }}">comments</a>
-        <a ng-click="deletemachine(machine)">delete</a>
+        <a ng-click="deleteMachine(machine)" ng-show="user.uid === machine.uid">delete</a>
       </div>
     </div>
   </div>

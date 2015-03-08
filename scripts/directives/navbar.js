@@ -15,6 +15,8 @@ app.controller('navbarCtrl', function ($scope, $firebase, $firebaseAuth, $modal,
 	$scope.user = Auth.user;
 	
 	$scope.submitMachine = function(){
+		$scope.machine.uid = Auth.user.uid;
+		$scope.machine.usr = Auth.user.profile.usr;
 		Machine.create($scope.machine).then( function(ref){
 		
 

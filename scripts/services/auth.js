@@ -45,6 +45,7 @@ app.factory('Auth',function( $firebase, $firebaseAuth, FIREBASE_URL, $rootScope,
   };
 	
    fireAuth.$onAuth(function(authData) {
+	if(authData){
      angular.copy(authData,Auth.user);
 	 Auth.user.profile = $firebase(ref.child('profile').child(Auth.user.uid)).$asObject();
 	  Auth.user.profile.$loaded().then(function(){
@@ -52,6 +53,7 @@ app.factory('Auth',function( $firebase, $firebaseAuth, FIREBASE_URL, $rootScope,
 		console.log(Auth.user.profile);
 	  });
 	 console.log(Auth.user);
+	 }
   });
   $rootScope.$on('$firebaseSimpleLogin:login', function(e, user) {
     console.log('logged in');

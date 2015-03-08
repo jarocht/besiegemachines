@@ -7,13 +7,19 @@ app.factory('Machine', function ($firebase, FIREBASE_URL) {
 	var Machine = {
 		all:machines,
 		create: function(machine){
-			return machines.$add(machine);
+			return machines.$add(machine).then(function(machineRef){
+				$firebase(ref.child('user_machines').child(machine.uid)).$push(machineRef.name());
+			
+			});
 		},
 		get: function(machineId){
 			return $firebase(ref.child('machines').child(machineId)).$asObject();
 		},
 		delete: function(machine){
 			return machines.$remove(machine);
+		},
+		comments : function(machineId){
+			return $firebase(ref.child('comments').child(machineId)).$asArray();
 		}
 	
 	};

@@ -22,16 +22,16 @@
 
 	$scope.register = function () {
 
-		if (!($scope.user.email && $scope.user.password && $scope.password2)) {
+		if (!($scope.registration_info.email && $scope.registration_info.password && $scope.password2)) {
 			addAlert('Please enter all information', 'warning');
-		} else if ($scope.user.password != $scope.password2) {
+		} else if ($scope.registration_info.password != $scope.password2) {
 			addAlert('Passwords do not match!', 'warning');
 		} else {
 
-			Auth.register($scope.user).then(function (authData) {
+			Auth.register($scope.registration_info).then(function (authData) {
 
-				return Auth.login($scope.user).then(function () {
-					authData.username = $scope.user.username;
+				return Auth.login($scope.registration_info).then(function () {
+					authData.username = $scope.registration_info.username;
 					return Auth.createProfile(authData);
 					
 				}).then(function(){

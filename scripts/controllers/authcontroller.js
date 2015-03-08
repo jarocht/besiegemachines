@@ -28,11 +28,16 @@
 			addAlert('Passwords do not match!', 'warning');
 		} else {
 
-			Auth.register($scope.user).then(function (data) {
+			Auth.register($scope.user).then(function (authData) {
 
 				return Auth.login($scope.user).then(function () {
+					authData.username = $scope.user.username;
+					return Auth.createProfile(authData);
+					
+				}).then(function(){
 					$location.path('/');
 				});
+				
 			}, errorFunction);
 		}
 	};

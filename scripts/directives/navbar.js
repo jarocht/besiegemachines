@@ -12,7 +12,7 @@ app.controller('navbarCtrl', function ($scope, $firebase, $firebaseAuth, $modal,
 	$scope.machine = {T:'Test Tile',DE:'Description'};
 	$scope.signedIn = Auth.signedIn;
 	$scope.logout = Auth.logout;
-	$scope.user = Auth.resolveUser();
+	$scope.user = Auth.user;
 	
 	$scope.submitMachine = function(){
 		Machine.create($scope.machine).then( function(ref){

@@ -1,4 +1,4 @@
-app.factory('Auth',function( $firebaseAuth,FIREBASE_URL, $rootScope, $location){
+app.factory('Auth',function( $firebase, $firebaseAuth, FIREBASE_URL, $rootScope, $location){
 	var ref = new Firebase(FIREBASE_URL);
 	var fireAuth = $firebaseAuth(ref);
 
@@ -6,6 +6,14 @@ app.factory('Auth',function( $firebaseAuth,FIREBASE_URL, $rootScope, $location){
     register: function (user) {
       return fireAuth.$createUser({email:user.email, password:user.password});
     },
+	createProfile: function(user){
+		var profile = {
+			usr:user.username
+		};
+		var profileRef = $firebase(ref.child('profile'));
+		return profileRef.$set(user.uid,profile);
+	
+	},
     login: function (user) {
 		if(typeof(user) == 'string'){
 			return fireAuth.$authWithCustomToken(user);
@@ -15,6 +23,10 @@ app.factory('Auth',function( $firebaseAuth,FIREBASE_URL, $rootScope, $location){
     },
     logout: function () {
       fireAuth.$unauth();
+	  if(this.user && this.user.profile) {
+		this.user.profile.$destroy();
+	}
+	angular.copy({}, this.user);
     },
     resolveUser: function() {
       return fireAuth.$getAuth();
@@ -34,6 +46,12 @@ app.factory('Auth',function( $firebaseAuth,FIREBASE_URL, $rootScope, $location){
 	
    fireAuth.$onAuth(function(authData) {
      angular.copy(authData,Auth.user);
+	 Auth.user.profile = $firebase(ref.child('profile').child(Auth.user.uid)).$asObject();
+	  Auth.user.profile.$loaded().then(function(){
+	  
+		console.log(Auth.user.profile);
+	  });
+	 console.log(Auth.user);
   });
   $rootScope.$on('$firebaseSimpleLogin:login', function(e, user) {
     console.log('logged in');

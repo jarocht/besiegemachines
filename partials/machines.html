@@ -1,0 +1,28 @@
+
+
+<div class="container machines-page masonry" >
+  <div class="machine" ng-repeat="machine in machines">
+    <div class="row no-gutter"  ng-embedly key="key"  query="query" add-image-styles="query.styles">
+		<div class="col-md-12 calcwidth" >
+			<a   ng-href="{{machine.URL}}" > </a>
+		</div>
+	</div>
+	<div class="row col-md-12">
+    <div class="col-md-12 col-xs-12">
+
+      <div class="info">
+        <p>
+          {{ machine.NM }}
+          <span class="url">({{ machine.DE}})</span>
+        </p>
+      </div>
+      <div>
+        <span>submitted by <a ng-href="#/users/{{ machine.uid }}">{{ machine.usr }}</a></span>
+        &mdash;
+        <a ng-href="#/machines/{{ machine.$id }}">comments</a>
+        <a ng-click="deleteMachine(machine)" ng-show="user.uid === machine.uid">delete</a>
+      </div>
+    </div>
+	</div>
+  </div>
+</div>

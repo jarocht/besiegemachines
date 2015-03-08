@@ -25,6 +25,9 @@ app.factory('Auth',function( $firebaseAuth,FIREBASE_URL, $rootScope, $location){
 	resetPassword:function(email){
 		return fireAuth.$resetPassword({'email':email});
 	},
+	changePassword:function(passwordOptions){
+		return fireAuth.$changePassword(passwordOptions);
+	},
     user: {},
 	error: ''
   };

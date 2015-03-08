@@ -1,18 +1,17 @@
 <div>
 	<div class="modal-header">
-		<h3 class="modal-title"ng-show="signup">Sign Up!</h3>
-		<h3 class="modal-title"ng-show="!signup">Log In!</h3>
+		<h3 class="modal-title" >Log In!</h3>
 	</div>
 	<div class="modal-body">
 		 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
 		 <div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<input class="form-control" ng-model="email" placeholder="Email Address" />
+				<input class="form-control" ng-model="user.email" placeholder="Email Address" />
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<input class="form-control" ng-model="password" type="password" placeholder="Password"/>
+				<input class="form-control" ng-model="user.password" type="password" placeholder="Password"/>
 			</div>
 		</div>
 		<div class="row" ng-show="signup">
@@ -29,8 +28,8 @@
 	<div class="modal-footer">
 		<div class="row">
 			<div class="col-md-12">
-				<button class="btn btn-primary col-md-4 col-md-offset-2" ng-click="createUser()" ng-if="signup">Sign Up</button>
-				<button class="btn btn-success col-md-4 col-md-offset-2" ng-click="login()" ng-if="!signup">Login</button>
+
+				<button class="btn btn-success col-md-4 col-md-offset-2" ng-click="login()" >Login</button>
 				<button class="btn btn-danger col-md-4" ng-click="cancel()">Cancel</button>
 			</div>
 		</div>

@@ -1,8 +1,8 @@
-﻿app.controller('AuthCtrl', function($scope, $location, Auth, user){
-	 if (user) {
+﻿app.controller('AuthCtrl', function ($scope, $location, Auth, user) {
+	if (user) {
 		$location.path('/');
-	  }
-	  $scope.alerts = [];
+	}
+	$scope.alerts = [];
 
 	var addAlert = function (a_msg, a_type) {
 		$scope.alerts.push({
@@ -10,33 +10,32 @@
 			msg : a_msg
 		});
 
-
 	};
-	
+
 	$scope.closeAlert = function (index) {
 		$scope.alerts.splice(index, 1);
 	};
-	var errorFunction = function(data){
-	
-		addAlert(data.message,'danger');
+	var errorFunction = function (data) {
+
+		addAlert(data.message, 'danger');
 	};
 
-	  $scope.register = function () {
-	  
-	  if (!($scope.user.email && $scope.user.password && $scope.password2)) {
+	$scope.register = function () {
+
+		if (!($scope.user.email && $scope.user.password && $scope.password2)) {
 			addAlert('Please enter all information', 'warning');
-		} else if($scope.user.password != $scope.password2){
+		} else if ($scope.user.password != $scope.password2) {
 			addAlert('Passwords do not match!', 'warning');
-		}else{
-		
-			Auth.register($scope.user).then(function(data) {
-			
-			  return Auth.login($scope.user).then(function() {
-				$location.path('/');
-			  });
-			},errorFunction);
+		} else {
+
+			Auth.register($scope.user).then(function (data) {
+
+				return Auth.login($scope.user).then(function () {
+					$location.path('/');
+				});
+			}, errorFunction);
 		}
-	  };
+	};
 });
 app.controller('passwordResetCtrl', function ($scope, $modalInstance, firebaseService, email, oldpw, Auth) {
 	$scope.alerts = [];
@@ -46,7 +45,7 @@ app.controller('passwordResetCtrl', function ($scope, $modalInstance, firebaseSe
 			type : a_type,
 			msg : a_msg
 		});
-		$scope.$apply();
+		
 
 	};
 
@@ -62,6 +61,8 @@ app.controller('passwordResetCtrl', function ($scope, $modalInstance, firebaseSe
 				email : email,
 				oldPassword : oldpw,
 				newPassword : $scope.password
+			}).then(function () {
+				$modalInstance.close(true);
 			}, function (error) {
 				if (error === null) {
 					$modalInstance.close(true);
@@ -74,9 +75,9 @@ app.controller('passwordResetCtrl', function ($scope, $modalInstance, firebaseSe
 	}
 
 });
-app.controller('signupModalCtrl', function ($scope, $modal,$modalInstance, $firebase, $firebaseAuth, $cookies, firebaseService, modaltype, Auth) {
+app.controller('loginModalCtrl', function ($scope, $modal, $modalInstance, $firebase, $firebaseAuth, $cookies, $location, firebaseService, Auth) {
 
-	$scope.signup = modaltype == 'signup';
+
 	$scope.alerts = [];
 
 	var addAlert = function (a_msg, a_type) {
@@ -84,7 +85,7 @@ app.controller('signupModalCtrl', function ($scope, $modal,$modalInstance, $fire
 			type : a_type,
 			msg : a_msg
 		});
-		$scope.$apply();
+		
 
 	};
 
@@ -95,10 +96,12 @@ app.controller('signupModalCtrl', function ($scope, $modal,$modalInstance, $fire
 		if (!$scope.email) {
 			addAlert("Please enter an email", "danger");
 		} else {
-			Auth.resetPassword($scope.email).then(function(success){ addAlert("Password reset email sent successfully", "success");},function (error) {
+			Auth.resetPassword($scope.email).then(function (success) {
+				addAlert("Password reset email sent successfully", "success");
+			}, function (error) {
 
-					addAlert("Error sending password reset email: " + error.message, "danger");
-	
+				addAlert("Error sending password reset email: " + error.message, "danger");
+
 			});
 
 		}
@@ -107,14 +110,35 @@ app.controller('signupModalCtrl', function ($scope, $modal,$modalInstance, $fire
 	$scope.login = function () {
 		if (!($scope.user.email && $scope.user.password)) {
 			addAlert('Please enter all information', 'warning');
-		} else{
-		
-	
-			
-			  return Auth.login($scope.user).then(function() {
+		} else {
+
+			return Auth.login($scope.user).then(function () {
 				$location.path('/');
-			  });
-	
+				if (Auth.user.password.isTemporaryPassword) {
+					var modalInstance = $modal.open({
+							templateUrl : 'partials/passwordResetModal.html',
+							controller : 'passwordResetCtrl',
+							resolve : {
+								email : function () {
+									return $scope.user.email;
+								},
+								oldpw : function () {
+									return $scope.user.password;
+								}
+							}
+
+						});
+
+				} 
+				$modalInstance.close();
+					
+				
+			},
+			
+			function(error){
+				addAlert(error.message,"danger");
+			});
+
 		}
 
 	};

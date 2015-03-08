@@ -24,7 +24,7 @@
             <ul class="nav navbar-nav">
                 <li><a ui-sref="machines">Machines</a></li>
 				
-				<li><a ng-show="!signedIn()" ng-click="openLoginSignup('login')" ng-if="!user">Login</a></li>
+				<li><a ng-show="!signedIn()" ng-click="openLogin()" ng-if="!user">Login</a></li>
 				<li><a ng-show="!signedIn()" ui-sref="register">Sign Up</a></li>
 				<li ng-show="signedIn()" class="dropdown" dropdown>
 					<a class="dropdown-toggle" dropdown-toggle>{{user.uid}}<span class="caret"></span></a>

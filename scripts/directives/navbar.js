@@ -30,15 +30,10 @@ app.controller('navbarCtrl', function ($scope, $firebase, $firebaseAuth, $modal,
 	}
 	$scope.restoreSession();
 
-	$scope.openLoginSignup = function (type) {
+	$scope.openLogin = function () {
 		var modalInstance = $modal.open({
-				templateUrl : 'partials/signupModal.html',
-				controller : 'signupModalCtrl',
-				resolve : {
-					modaltype : function () {
-						return type;
-					}
-				}
+				templateUrl : 'partials/loginModal.html',
+				controller : 'loginModalCtrl'
 
 			});
 
